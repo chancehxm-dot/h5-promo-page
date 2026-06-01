@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import * as CryptoJS from 'crypto-js';
 import type { AppConfig } from '../../config/app.config';
 import './styles.css';
 
@@ -7,99 +8,266 @@ interface PageBProps {
   onInstallClick: () => void;
 }
 
+interface EncryptedArticleResponse {
+  version: number;
+  algorithm: 'AES-CBC';
+  keyHint: string;
+  iv: string;
+  data: string;
+}
+
+interface ArticleContent {
+  title: string;
+  chapter: string;
+  summary: string;
+  paragraphs: string[];
+}
+
+const articleEndpoint = '/article.json';
+const articleKeyPhrase = 'ReadWave PageB article key 2026';
+// const IOS_STORE_BASE_URL = 'https://apps.apple.com/us/app/readwave/id6758969190';
+// const ANDROID_STORE_URL = 'https://play.google.com/store/apps/details?id=com.nlyt.readwave';
+const IOS_STORE_BASE_URL = 'https://apps.apple.com/us/app/novelaria-read-book-booktok/id6587560745';
+const ANDROID_STORE_URL = 'https://play.google.com/store/apps/details?id=com.block.juggle';
+
+const getStoreUrl = () => {
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  const platform = window.navigator.platform.toLowerCase();
+  const maxTouchPoints = window.navigator.maxTouchPoints || 0;
+  const isAndroid = userAgent.includes('android');
+  const isIOS =
+    /iphone|ipad|ipod/.test(userAgent) ||
+    (platform === 'macintel' && maxTouchPoints > 1);
+
+  if (isAndroid) {
+    return ANDROID_STORE_URL;
+  }
+
+  if (isIOS) {
+    return IOS_STORE_BASE_URL;
+  }
+
+  return IOS_STORE_BASE_URL;
+};
+
+const decodeBase64 = (value: string) => {
+  const binary = window.atob(value);
+  const bytes = new Uint8Array(binary.length);
+
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+
+  return bytes;
+};
+
+const decryptArticleWithWebCrypto = async (payload: EncryptedArticleResponse): Promise<ArticleContent> => {
+  if (!window.crypto?.subtle) {
+    throw new Error('WebCrypto is unavailable in this browser context');
+  }
+
+  const encoder = new TextEncoder();
+  const keyDigest = await window.crypto.subtle.digest('SHA-256', encoder.encode(articleKeyPhrase));
+  const key = await window.crypto.subtle.importKey('raw', keyDigest, 'AES-CBC', false, ['decrypt']);
+  const decrypted = await window.crypto.subtle.decrypt(
+    { name: 'AES-CBC', iv: decodeBase64(payload.iv) },
+    key,
+    decodeBase64(payload.data),
+  );
+
+  return JSON.parse(new TextDecoder().decode(decrypted)) as ArticleContent;
+};
+
+const decryptArticleWithFallback = (payload: EncryptedArticleResponse): ArticleContent => {
+  const key = CryptoJS.SHA256(articleKeyPhrase);
+  const iv = CryptoJS.enc.Base64.parse(payload.iv);
+  const ciphertext = CryptoJS.enc.Base64.parse(payload.data);
+  const decrypted = CryptoJS.AES.decrypt({ ciphertext } as CryptoJS.lib.CipherParams, key, {
+    iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7,
+  });
+  const content = decrypted.toString(CryptoJS.enc.Utf8);
+
+  if (!content) {
+    throw new Error('Article fallback decrypt failed');
+  }
+
+  return JSON.parse(content) as ArticleContent;
+};
+
+const decryptArticle = async (payload: EncryptedArticleResponse): Promise<ArticleContent> => {
+  if (payload.algorithm !== 'AES-CBC') {
+    throw new Error(`Unsupported article algorithm: ${payload.algorithm}`);
+  }
+
+  try {
+    return await decryptArticleWithWebCrypto(payload);
+  } catch {
+    return decryptArticleWithFallback(payload);
+  }
+};
+
 export const PageB = ({ config, onInstallClick }: PageBProps) => {
+  const banners = useMemo(
+    () => (config.bPageBanners.length > 0 ? config.bPageBanners : ['/1.png', '/2.png', '/3.png', '/4.png']),
+    [config.bPageBanners],
+  );
   const [currentBanner, setCurrentBanner] = useState(0);
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const [article, setArticle] = useState<ArticleContent | null>(null);
+  const [isArticleLoading, setIsArticleLoading] = useState(true);
+  const [articleError, setArticleError] = useState('');
+  const storeUrl = useMemo(() => getStoreUrl(), []);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentBanner((prev) => (prev + 1) % config.bPageBanners.length);
-    }, 4000);
+    const timer = window.setInterval(() => {
+      setCurrentBanner((prev) => (prev + 1) % banners.length);
+    }, 4500);
 
-    return () => clearInterval(timer);
-  }, [config.bPageBanners.length]);
+    return () => window.clearInterval(timer);
+  }, [banners.length]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadArticle = async () => {
+      try {
+        setIsArticleLoading(true);
+        const response = await fetch(articleEndpoint, { cache: 'no-store' });
+
+        if (!response.ok) {
+          throw new Error(`Article request failed: ${response.status}`);
+        }
+
+        const encryptedPayload = (await response.json()) as EncryptedArticleResponse;
+        const nextArticle = await decryptArticle(encryptedPayload);
+
+        if (isMounted) {
+          setArticle(nextArticle);
+          setArticleError('');
+        }
+      } catch (error) {
+        if (isMounted) {
+          setArticleError(error instanceof Error ? error.message : 'Article failed to load');
+        }
+      } finally {
+        if (isMounted) {
+          setIsArticleLoading(false);
+        }
+      }
+    };
+
+    loadArticle();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleInstallClick = () => {
-    window.location.href = config.bPageInstallUrl;
     onInstallClick();
+    window.location.href = storeUrl;
   };
+
+  // const goToPreviousBanner = () => {
+  //   setCurrentBanner((prev) => (prev - 1 + banners.length) % banners.length);
+  // };
+
+  // const goToNextBanner = () => {
+  //   setCurrentBanner((prev) => (prev + 1) % banners.length);
+  // };
 
   return (
     <main className="page-b">
-      {/* Hero Banner Carousel */}
-      <div className="banner-carousel">
-        {config.bPageBanners.map((banner, index) => (
-          <div
-            key={index}
-            className={`banner-slide ${index === currentBanner ? 'active' : ''}`}
-            style={{ opacity: index === currentBanner ? 1 : 0, zIndex: index === currentBanner ? 1 : 0 }}
-          >
+      <section className="story-carousel" aria-label="Featured story preview">
+        <div className="story-carousel__track">
+          {banners.map((banner, index) => (
             <img
+              key={banner}
               src={banner}
-              alt={`Banner ${index + 1}`}
-              className={`banner-image ${imageLoaded ? 'loaded' : ''}`}
-              onLoad={() => setImageLoaded(true)}
-            />
-          </div>
-        ))}
-
-        {/* Carousel Indicators */}
-        <div className="carousel-indicators">
-          {config.bPageBanners.map((_, index) => (
-            <button
-              key={index}
-              className={`indicator ${index === currentBanner ? 'active' : ''}`}
-              onClick={() => setCurrentBanner(index)}
-              aria-label={`Go to banner ${index + 1}`}
+              alt={`Story preview ${index + 1}`}
+              className={`story-carousel__image ${index === currentBanner ? 'is-active' : ''}`}
+              loading={index === 0 ? 'eager' : 'lazy'}
             />
           ))}
         </div>
-      </div>
 
-      {/* Content Section */}
-      <div className="content-section">
-        <div className="content-wrapper">
-          <h1 className="page-title">{config.bPageTitle}</h1>
-          <p className="page-description">{config.bPageDescription}</p>
+        {/* <button
+          className="story-carousel__control story-carousel__control--prev"
+          type="button"
+          onClick={goToPreviousBanner}
+          aria-label="Previous image"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M15.7 5.3 9 12l6.7 6.7-1.4 1.4L6.2 12l8.1-8.1 1.4 1.4Z" />
+          </svg>
+        </button>
+        <button
+          className="story-carousel__control story-carousel__control--next"
+          type="button"
+          onClick={goToNextBanner}
+          aria-label="Next image"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m8.3 18.7 6.7-6.7-6.7-6.7 1.4-1.4 8.1 8.1-8.1 8.1-1.4-1.4Z" />
+          </svg>
+        </button> */}
 
-          {/* Feature Cards */}
-          <div className="feature-cards">
-            <div className="feature-card">
-              <div className="feature-icon">📚</div>
-              <h3>Thousands of Novels</h3>
-              <p>Explore our vast library of captivating stories across all genres</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">⚡</div>
-              <h3>Fast Updates</h3>
-              <p>Never wait long for new chapters - fresh content daily</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">🎨</div>
-              <h3>Beautiful Design</h3>
-              <p>Immersive reading experience with customizable themes</p>
-            </div>
+        <div className="story-carousel__dots" aria-label="Choose preview image">
+          {banners.map((banner, index) => (
+            <button
+              key={`${banner}-dot`}
+              type="button"
+              className={`story-carousel__dot ${index === currentBanner ? 'is-active' : ''}`}
+              onClick={() => setCurrentBanner(index)}
+              aria-label={`Show image ${index + 1}`}
+              aria-current={index === currentBanner}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className="article-shell" aria-live="polite">
+        <div className="article-meta">
+          <span>{config.appName}</span>
+          <span>Exclusive Story</span>
+        </div>
+
+        {isArticleLoading ? (
+          <div className="article-state">
+            <div className="article-state__line" />
+            <div className="article-state__line article-state__line--short" />
+            <div className="article-state__block" />
           </div>
+        ) : articleError ? (
+          <div className="article-error" role="alert">
+            Content is temporarily unavailable.
+          </div>
+        ) : article ? (
+          <article className="article-content">
+            <p className="article-chapter">{article.chapter}</p>
+            <h1>{article.title}</h1>
+            <p className="article-summary">{article.summary}</p>
+            <div className="article-body">
+              {article.paragraphs.map((paragraph, index) => (
+                <p key={`${paragraph.slice(0, 16)}-${index}`}>{paragraph}</p>
+              ))}
+            </div>
+          </article>
+        ) : null}
 
-          {/* Install Button */}
-          <button className="install-button" onClick={handleInstallClick}>
-            <span>Continue Reading</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M8 5v14l11-7z"/>
+        <div className="article-actions">
+          <button className="install-button" type="button" onClick={handleInstallClick}>
+            Continue Reading
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7L8 5Z" />
             </svg>
           </button>
-
-          {/* Alternative Link */}
-          <p className="alternative-link">
-            Already have the app? <a href={config.installUrl}>Open here</a>
-          </p>
+          {/* <a className="open-link" href={storeUrl}>
+            Open in app
+          </a> */}
         </div>
-      </div>
-
-      {/* Footer */}
-      <footer className="page-footer">
-        <p>© 2026 {config.appName}. All rights reserved.</p>
-      </footer>
+      </section>
     </main>
   );
 };

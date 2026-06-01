@@ -4,7 +4,7 @@ export interface TrackingOptions {
   platform?: string;
 }
 
-export const trackPageShow = (eventName: string, platform = 'facebook') => {
+export const trackPageShow = (eventName: string, platform = 'facebook', cb?: () => void) => {
   const img = document.createElement('img');
   img.style.display = 'none';
 
@@ -20,6 +20,12 @@ export const trackPageShow = (eventName: string, platform = 'facebook') => {
     : `https://${location.hostname}/${domain.substring(0, 1)}.gif?s=${domain}&a=${platform}&t=${eventName}&_=${Date.now()}`;
 
   img.src = trackingUrl;
+  img.onload = () => {
+    cb && cb();
+  };
+  img.onerror = () => {
+    cb && cb();
+  };
   document.body.appendChild(img);
 
   // 清理 img 元素

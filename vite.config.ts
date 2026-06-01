@@ -43,7 +43,22 @@ export default defineConfig({
         // 文件名哈希
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]',
+        // 将不同类型的资源分别放到不同的目录中
+        assetFileNames: (assetInfo) => {
+          // 获取文件扩展名
+          const ext = assetInfo.name?.split('.').pop() || '';
+          
+          // 根据文件类型分配到不同的目录
+          if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'ico', 'webp'].includes(ext)) {
+            return 'assets/img/[name]-[hash].[ext]';
+          } else if (['css'].includes(ext)) {
+            return 'assets/css/[name]-[hash].[ext]';
+          } else if (['woff', 'woff2', 'ttf', 'otf'].includes(ext)) {
+            return 'assets/fonts/[name]-[hash].[ext]';
+          } else {
+            return 'assets/[name]-[hash].[ext]';
+          }
+        },
       },
     },
     // 禁用源码映射（保护源码）

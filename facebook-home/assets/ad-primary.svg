@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="378" height="380" viewBox="0 0 378 380">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9023d9"/>
+      <stop offset=".47" stop-color="#0aa9ff"/>
+      <stop offset="1" stop-color="#1828ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#001848" flood-opacity=".65"/>
+    </filter>
+  </defs>
+  <rect width="378" height="380" fill="url(#bg)"/>
+  <g opacity=".18" stroke="#fff" stroke-width="1">
+    <path d="M10 76h110v104H10zM128 64h98v112h-98zM238 58h126v118H238zM20 207h105v115H20zM250 213h102v110H250z"/>
+    <path d="M0 309h378M0 269h378M0 229h378M0 189h378M0 149h378M0 109h378M0 69h378"/>
+    <path d="M39 0v380M79 0v380M119 0v380M159 0v380M199 0v380M239 0v380M279 0v380M319 0v380"/>
+  </g>
+  <g filter="url(#shadow)">
+    <text x="26" y="48" fill="#fff" font-family="Arial Black, Arial, sans-serif" font-size="30" font-weight="900" stroke="#123a92" stroke-width="2">1 CLICK =</text>
+    <text x="177" y="55" fill="#fff0cc" font-family="Arial Black, Arial, sans-serif" font-size="55" font-weight="900" stroke="#e8324a" stroke-width="2">4</text>
+    <text x="224" y="48" fill="#fff" font-family="Arial Black, Arial, sans-serif" font-size="30" font-weight="900" stroke="#123a92" stroke-width="2">IMPACTS</text>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-width="5" opacity=".88">
+    <path d="M79 120c36 4 54 50 116 51" stroke="#59e8ff"/>
+    <path d="M287 120c-34 5-53 48-113 49" stroke="#66ff62"/>
+    <path d="M83 246c36-4 52-52 110-55" stroke="#ff771f"/>
+    <path d="M291 246c-37-6-59-52-110-56" stroke="#f756ff"/>
+  </g>
+  <g transform="translate(141 99)">
+    <rect x="22" y="0" width="72" height="126" rx="16" fill="#08134d" stroke="#3efcff" stroke-width="4"/>
+    <rect x="32" y="15" width="52" height="93" rx="5" fill="#1ed5ff" opacity=".45"/>
+    <circle cx="58" cy="113" r="5" fill="#45e4ff"/>
+    <circle cx="58" cy="64" r="22" fill="#5326f3" stroke="#ffec54" stroke-width="4"/>
+    <text x="43" y="72" fill="#fff" font-family="Arial Black, Arial" font-size="20">GO</text>
+  </g>
+  <g transform="translate(176 183)" filter="url(#shadow)">
+    <path d="M26 116c-6-22-14-37-25-56-6-10 7-18 15-9l12 14V11c0-8 13-8 13 0v41c2-9 14-10 17-1 3-8 15-7 17 2 6-5 16 0 16 9 0 30-2 51-8 72H43c-7-6-13-12-17-18Z" fill="#ffbe8e" stroke="#f05e3e" stroke-width="3"/>
+    <path d="M33 72V14M52 69V53M70 70V55" stroke="#f05e3e" stroke-width="3"/>
+  </g>
+  <g transform="translate(58 92)" filter="url(#shadow)">
+    <path d="M23 5h42l16 18v58H6V23L23 5Z" fill="#55d3ff" stroke="#bcf6ff" stroke-width="3"/>
+    <text x="25" y="55" fill="#2070ca" font-family="Arial Black, Arial" font-size="39">必</text>
+    <path d="M27 5c1-16 34-16 35 0" fill="none" stroke="#bcf6ff" stroke-width="5"/>
+  </g>
+  <g transform="translate(254 81)" filter="url(#shadow)">
+    <circle cx="48" cy="44" r="44" fill="#80ee52" stroke="#d7ff84" stroke-width="4"/>
+    <text x="21" y="54" fill="#26a83e" font-family="Arial Black, Arial" font-size="45">$</text>
+    <text x="58" y="52" fill="#26a83e" font-family="Arial Black, Arial" font-size="23">↗</text>
+  </g>
+  <g transform="translate(24 242)" filter="url(#shadow)">
+    <path d="M16 9h56l10 49H6L16 9Z" fill="#ffb521" stroke="#ffef7a" stroke-width="3"/>
+    <text x="30" y="47" fill="#ff2c35" font-family="Arial Black, Arial" font-size="35">N</text>
+    <circle cx="70" cy="5" r="12" fill="#ff2c35" stroke="#fff" stroke-width="2"/>
+    <text x="66" y="10" fill="#fff" font-family="Arial Black, Arial" font-size="15">!</text>
+  </g>
+  <g transform="translate(259 243)" filter="url(#shadow)">
+    <path d="M52 5c-27 0-50 18-50 41 0 25 22 44 50 44 27 0 49-19 49-44C101 23 79 5 52 5Z" fill="#6df1ff" opacity=".65"/>
+    <path d="M53 8c-15 0-28 13-28 28 0 23 28 52 28 52s28-29 28-52C81 21 68 8 53 8Z" fill="#b942ff" stroke="#fff" stroke-width="3"/>
+    <text x="43" y="44" fill="#fff" font-family="Arial Black, Arial" font-size="22">◎</text>
+  </g>
+  <g filter="url(#shadow)">
+    <text x="24" y="349" fill="#fff" font-family="Arial Black, Arial, sans-serif" font-size="31" font-weight="900" stroke="#123a92" stroke-width="2">1 CLICK =</text>
+    <text x="177" y="356" fill="#fff0cc" font-family="Arial Black, Arial, sans-serif" font-size="55" font-weight="900" stroke="#e8324a" stroke-width="2">4</text>
+    <text x="224" y="349" fill="#fff" font-family="Arial Black, Arial, sans-serif" font-size="31" font-weight="900" stroke="#123a92" stroke-width="2">IMPACTS</text>
+  </g>
+  <g font-family="Arial Black, Arial" font-size="9" font-weight="900">
+    <text x="33" y="369" fill="#baff54">APP GROWTH</text>
+    <text x="103" y="369" fill="#fff45c">SOCIAL ENGAGEMENT</text>
+    <text x="205" y="369" fill="#ff8b42">INSTANT ALERTS</text>
+    <text x="291" y="369" fill="#ff73de">SMART LOCATION</text>
+  </g>
+</svg>

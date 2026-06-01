@@ -11,7 +11,7 @@ interface PageCProps {
 export const PageC = ({ config, onInstallClick }: PageCProps) => {
   // 页面加载时上报 b_page_show
   useEffect(() => {
-    trackPageShow('b_page_show');
+    trackPageShow('b_page_show',"", () => {});
   }, []);
 
   const handleInstallClick = (e: React.MouseEvent) => {

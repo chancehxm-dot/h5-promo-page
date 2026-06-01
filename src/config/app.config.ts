@@ -61,20 +61,31 @@ export interface AppConfig {
   cPageCopyright: string;
 }
 
+// 导入图片资源
+import logoPng from '../assets/logo.png';
+import iconPng from '../assets/icon.png';
+import blockBlastIcon from '../assets/block-blast-icon.png';
+import screenshot1 from '../assets/1.png';
+import screenshot2 from '../assets/2.png';
+import screenshot3 from '../assets/3.png';
+import screenshot4 from '../assets/4.png';
+import banner17794467173435 from '../assets/17794467173435.png';
+import faviconIco from '../assets/favicon_v3.ico';
+
 export const defaultConfig: AppConfig = {
   appName: 'ReadWave',
   developer: 'BitVisual Technology Limited',
-  appIcon: '/icon.png',
-  favicon: '/favicon_v3.ico',
+  appIcon: iconPng,
+  favicon: faviconIco,
   rating: '4.5',
   downloads: '100K+',
   ageRating: 'Mature 17+',
-  screenshots: ['/1.png', '/2.png', '/3.png', '/4.png'],
+  screenshots: [screenshot1, screenshot2, screenshot3, screenshot4],
   description: 'Discover a world of captivating stories on ReadWave. Unlock immersive novels, enjoy smooth reading, and explore endless stories anytime, anywhere.',
   shortDescription: 'ReadWave is a premium novel reading app designed for readers who love immersive storytelling.',
   category: 'Books & Reference',
   updatedDate: 'May 8, 2026',
-  installUrl: 'https://apps.apple.com/app/readwave', // iOS App Store 链接
+  installUrl: 'https://apps.apple.com/us/app/readwave/id6758969190',
   safetyItems: [
     {
       icon: 'share',
@@ -101,14 +112,15 @@ export const defaultConfig: AppConfig = {
     'Optimize the interface display',
     'Fix functional issues'
   ],
-  bPageBanners: ['/banner1.png', '/banner2.png', '/banner3.png'],
-  bPageTitle: 'Welcome Back!',
-  bPageDescription: 'Continue your reading journey with thousands of captivating novels waiting for you.',
-  bPageInstallUrl: 'https://apps.apple.com/app/readwave',
+  // bPageBanners: [screenshot1, screenshot2, screenshot3, screenshot4],
+  bPageBanners: [banner17794467173435],
+  bPageTitle: 'The Substitute Bride',
+  bPageDescription: 'Continue the story from the latest chapter preview.',
+  bPageInstallUrl: 'https://apps.apple.com/us/app/readwave/id6758969190',
 
   // A 面配置 - PlotFork
   aPageAppName: 'PlotFork',
-  aPageAppIcon: '/logo.png',
+  aPageAppIcon: logoPng,
   aPageSubtitle: 'Discover Interesting Stories',
   aPageDescription: 'PlotFork is a mobile app dedicated to offering an immersive reading experience. It satisfies the diverse reading preferences of every reader with its extensive book collection. Whether you\'re a romantic at heart, a drama lover, or a suspense fanatic, you can find something to your liking here. Download it now and explore fascinating stories.',
   aPageInstallUrl: 'https://apps.apple.com/us/app/plotfork/id6756102639',
@@ -119,7 +131,7 @@ export const defaultConfig: AppConfig = {
 
   // C 面配置 - Block Blast
   cPageAppName: 'Block Blast',
-  cPageAppIcon: '/block-blast-icon.png',
+  cPageAppIcon: blockBlastIcon,
   cPageSubtitle: 'Puzzle & Strategy',
   cPageDescription: 'Enter the world of Block Blast, where every move is a test of your brain and strategy. Dive into the thrill of block crush gameplay—watch vibrant cubes explode in color as you solve each puzzle. With fresh daily puzzle challenges that keep your mind engaged and an endless high score system that rewards your best strategies, Block Blast delivers nonstop excitement for casual players and puzzle masters alike.',
   cPageInstallUrl: 'https://apps.apple.com/us/app/block-blast/id1617391485',
