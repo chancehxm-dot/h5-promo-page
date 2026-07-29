@@ -65,6 +65,7 @@ export interface AppConfig {
 import logoPng from '../assets/logo.png';
 import iconPng from '../assets/icon.png';
 import blockBlastIcon from '../assets/block-blast-icon.png';
+import coverPng from '../assets/cover.png';
 import screenshot1 from '../assets/1.png';
 import screenshot2 from '../assets/2.png';
 import screenshot3 from '../assets/3.png';
@@ -118,16 +119,16 @@ export const defaultConfig: AppConfig = {
   bPageDescription: 'Continue the story from the latest chapter preview.',
   bPageInstallUrl: 'https://apps.apple.com/us/app/readwave/id6758969190',
 
-  // A 面配置 - PlotFork
-  aPageAppName: 'PlotFork',
-  aPageAppIcon: logoPng,
-  aPageSubtitle: 'Discover Interesting Stories',
-  aPageDescription: 'PlotFork is a mobile app dedicated to offering an immersive reading experience. It satisfies the diverse reading preferences of every reader with its extensive book collection. Whether you\'re a romantic at heart, a drama lover, or a suspense fanatic, you can find something to your liking here. Download it now and explore fascinating stories.',
+  // A 面配置 - Alpha Asher 小说
+  aPageAppName: 'Alpha Asher',
+  aPageAppIcon: coverPng,
+  aPageSubtitle: 'By Author-Hartin',
+  aPageDescription: 'After her boyfriend Tyler finds his true mate, Lola flees into the forest — straight into a year of training, healing, and self-discovery. But when tragedy calls her back to the pack she abandoned, she finds a ruthless new Alpha in charge. Alpha Asher is dangerous, commanding, and impossible to ignore. And he has his eyes on her.',
   aPageInstallUrl: 'https://apps.apple.com/us/app/plotfork/id6756102639',
-  aPageButtonText: 'Download Now',
+  aPageButtonText: 'Continue Reading in App',
   aPagePrivacyUrl: 'https://www.plotforkbox.com/privacy-policy.html',
   aPageTermsUrl: 'https://www.plotforkbox.com/terms-of-service.html',
-  aPageCopyright: '© 2026 PlotFork. All Rights Reserved.',
+  aPageCopyright: '© 2026 Alpha Asher. All Rights Reserved.',
 
   // C 面配置 - Block Blast
   cPageAppName: 'Block Blast',

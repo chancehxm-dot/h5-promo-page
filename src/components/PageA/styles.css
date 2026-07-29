@@ -1,5 +1,227 @@
-  .page-a-blank {
+/* ===== Novel Page ===== */
+.novel-page {
+  min-height: 100vh;
+  background: #faf8f5;
+  color: #2c2416;
+  font-family: Georgia, "Times New Roman", serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== Cover Section ===== */
+.novel-cover {
+  position: relative;
   width: 100%;
-  height: 100vh;
-  background: #ffffff;
+  overflow: hidden;
+}
+
+.novel-cover__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 520px;
+  object-fit: cover;
+}
+
+.novel-cover__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 40px 24px 48px;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.15) 40%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+}
+
+.novel-cover__title {
+  margin: 0 0 8px;
+  color: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.01em;
+}
+
+.novel-cover__author {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 16px;
+  font-style: italic;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== Content Section ===== */
+.novel-content {
+  padding: 32px 20px 0;
+}
+
+.novel-content__inner {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.novel-content__chapter-title {
+  margin: 0 0 32px;
+  color: #8b5e3c;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.novel-content__chapter-title::after {
+  content: "";
+  display: block;
+  width: 50px;
+  height: 2px;
+  margin: 12px auto 0;
+  background: #d4b896;
+}
+
+.novel-content__paragraph {
+  margin: 0 0 1.4em;
+  font-size: 18px;
+  line-height: 1.85;
+  color: #3a3025;
+  text-indent: 1.5em;
+}
+
+.novel-content__paragraph:first-of-type {
+  text-indent: 0;
+}
+
+/* ===== CTA Section ===== */
+.novel-cta {
+  margin: 48px 0 40px;
+  padding: 36px 24px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(250, 248, 245, 0) 0%, rgba(212, 184, 150, 0.15) 100%);
+  border-top: 1px solid #e8dcd0;
+  border-bottom: 1px solid #e8dcd0;
+}
+
+.novel-cta__teaser {
+  margin: 0 0 20px;
+  color: #8b7355;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  font-style: italic;
+}
+
+.novel-cta__button {
+  display: inline-block;
+  background-color: #635bff;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 16px 56px;
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(99, 91, 255, 0.25);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.novel-cta__button:hover {
+  background-color: #524ae8;
+  transform: translateY(-2px);
+}
+
+/* ===== Footer ===== */
+.novel-footer {
+  padding: 24px 20px 40px;
+  text-align: center;
+}
+
+.novel-footer__links {
+  margin-bottom: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  color: #b0a89a;
+}
+
+.novel-footer__links a {
+  color: #8b7355;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.novel-footer__links a:hover {
+  color: #635bff;
+  text-decoration: underline;
+}
+
+.novel-footer__divider {
+  margin: 0 10px;
+  color: #d4c8b8;
+}
+
+.novel-footer__copyright {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  color: #c4b8a8;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  .novel-cover__image {
+    max-height: 380px;
+  }
+
+  .novel-cover__title {
+    font-size: 28px;
+  }
+
+  .novel-cover__overlay {
+    padding: 32px 16px 36px;
+  }
+
+  .novel-content {
+    padding: 24px 16px 0;
+  }
+
+  .novel-content__paragraph {
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .novel-cta__button {
+    font-size: 18px;
+    padding: 14px 40px;
+  }
+}
+
+@media (min-width: 768px) {
+  .novel-cover__image {
+    max-height: 600px;
+  }
+
+  .novel-cover__title {
+    font-size: 44px;
+  }
+
+  .novel-cover__overlay {
+    padding: 56px 32px 64px;
+  }
+
+  .novel-content {
+    padding: 48px 32px 0;
+  }
+
+  .novel-content__paragraph {
+    font-size: 19px;
+    line-height: 1.9;
+  }
 }
