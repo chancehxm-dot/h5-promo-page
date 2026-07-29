@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import type { AppConfig } from '../../config/app.config';
 import { allChapters, novelTitle, novelAuthor } from '../../data/novel-chapters';
 import { trackPageShow, trackInstallClick } from '../../utils/tracking';
@@ -9,17 +9,35 @@ interface PageAProps {
   onInstallClick: () => void;
 }
 
-export const PageA = ({ config, onInstallClick }: PageAProps) => {
-  const [expanded, setExpanded] = useState(false);
+var getStoreUrl = function (config: AppConfig) {
+  var userAgent = window.navigator.userAgent.toLowerCase();
+  var platform = window.navigator.platform.toLowerCase();
+  var maxTouchPoints = window.navigator.maxTouchPoints || 0;
+  var isAndroid = userAgent.indexOf('android') !== -1;
+  var isIOS =
+    /iphone|ipad|ipod/.test(userAgent) ||
+    (platform === 'macintel' && maxTouchPoints > 1);
 
-  useEffect(() => {
+  if (isAndroid) {
+    return config.aPageAndroidInstallUrl;
+  }
+  return config.aPageInstallUrl;
+};
+
+export var PageA = function (_a: PageAProps) {
+  var config = _a.config;
+  var onInstallClick = _a.onInstallClick;
+
+  var storeUrl = useMemo(function () { return getStoreUrl(config); }, [config]);
+
+  useEffect(function () {
     trackPageShow('a_page_show');
   }, []);
 
-  const handleInstallClick = (e: React.MouseEvent) => {
+  var handleInstallClick = function (e: React.MouseEvent) {
     e.preventDefault();
     trackInstallClick('a_install_click');
-    window.location.href = config.aPageInstallUrl;
+    window.location.href = storeUrl;
     onInstallClick();
   };
 
@@ -44,7 +62,7 @@ export const PageA = ({ config, onInstallClick }: PageAProps) => {
       {/* Bounce CTA Button */}
       <div className="cta-bar">
         <a
-          href={config.aPageInstallUrl}
+          href={storeUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="cta-bar__button"
@@ -90,7 +108,7 @@ export const PageA = ({ config, onInstallClick }: PageAProps) => {
             Enjoyed the preview? Read the full story in the app.
           </p>
           <a
-            href={config.aPageInstallUrl}
+            href={storeUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="cta-bar__button"

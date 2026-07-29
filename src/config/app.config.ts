@@ -44,6 +44,7 @@ export interface AppConfig {
   aPageSubtitle: string;
   aPageDescription: string;
   aPageInstallUrl: string;
+  aPageAndroidInstallUrl: string;
   aPageButtonText: string;
   aPagePrivacyUrl: string;
   aPageTermsUrl: string;
@@ -62,7 +63,7 @@ export interface AppConfig {
 }
 
 // 导入图片资源
-import logoPng from '../assets/logo.png';
+// import logoPng from '../assets/logo.png';
 import iconPng from '../assets/icon.png';
 import blockBlastIcon from '../assets/block-blast-icon.png';
 import coverPng from '../assets/cover.png';
@@ -123,8 +124,9 @@ export const defaultConfig: AppConfig = {
   aPageAppName: 'Alpha Asher',
   aPageAppIcon: coverPng,
   aPageSubtitle: 'By Author-Hartin',
-  aPageDescription: 'After her boyfriend Tyler finds his true mate, Lola flees into the forest — straight into a year of training, healing, and self-discovery. But when tragedy calls her back to the pack she abandoned, she finds a ruthless new Alpha in charge. Alpha Asher is dangerous, commanding, and impossible to ignore. And he has his eyes on her.',
-  aPageInstallUrl: 'https://apps.apple.com/us/app/plotfork/id6756102639',
+  aPageDescription: 'Read up to 3 chapters here, then continue in ReadWave.',
+  aPageInstallUrl: 'https://apps.apple.com/us/app/readwave/id6758969190',
+  aPageAndroidInstallUrl: 'https://play.google.com/store/apps/details?id=com.nlyt.readwave',
   aPageButtonText: 'Continue Reading in App',
   aPagePrivacyUrl: 'https://www.plotforkbox.com/privacy-policy.html',
   aPageTermsUrl: 'https://www.plotforkbox.com/terms-of-service.html',
